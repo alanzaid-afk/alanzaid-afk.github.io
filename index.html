@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Operator | Tu Socio Invisible</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:wght@400&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== RESET & BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Colores principales profesionales pero vibrantes */
+            --primary-purple: #6366F1;
+            --primary-blue: #3B82F6;
+            --primary-teal: #14B8A6;
+            --primary-emerald: #10B981;
+            --accent-orange: #F59E0B;
+            --accent-pink: #EC4899;
+            --accent-violet: #8B5CF6;
+            
+            /* Neutrales elegantes */
+            --dark-navy: #0F172A;
+            --dark-slate: #1E293B;
+            --medium-slate: #334155;
+            --light-slate: #64748B;
+            --gray-blue: #94A3B8;
+            --soft-gray: #E2E8F0;
+            --light-bg: #F8FAFC;
+            --pure-white: #FFFFFF;
+            
+            /* Gradientes */
+            --gradient-primary: linear-gradient(135deg, #6366F1 0%, #3B82F6 100%);
+            --gradient-success: linear-gradient(135deg, #10B981 0%, #14B8A6 100%);
+            --gradient-warm: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            --gradient-cool: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark-navy);
+            line-height: 1.7;
+            background: var(--pure-white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--dark-navy);
+        }
+
+        /* ==================== CONTAINER ==================== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            min-height: 100vh;
+            background: var(--light-bg);
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 800px;
+            height: 800px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.08;
+            filter: blur(80px);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: var(--gradient-success);
+            border-radius: 50%;
+            opacity: 0.08;
+            filter: blur(80px);
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--pure-white);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary-purple);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+            margin-bottom: 32px;
+        }
+
+        .hero-badge::before {
+            content: '⚡';
+            font-size: 16px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
+            font-weight: 800;
+            margin-bottom: 32px;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            color: var(--medium-slate);
+            margin-bottom: 60px;
+            font-weight: 500;
+            line-height: 1.6;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stat-box {
+            background: var(--pure-white);
+            padding: 40px 32px;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .stat-box:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-box:nth-child(2)::before {
+            background: var(--gradient-success);
+        }
+
+        .stat-box:nth-child(3)::before {
+            background: var(--gradient-warm);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 12px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-box:nth-child(2) .stat-number {
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-box:nth-child(3) .stat-number {
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--light-slate);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ==================== SECTION BASE ==================== */
+        section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .section-header {
+            max-width: 800px;
+            margin: 0 auto 80px;
+            text-align: center;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-purple);
+            margin-bottom: 20px;
+            padding: 8px 20px;
+            background: rgba(99, 102, 241, 0.08);
+            border-radius: 50px;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 24px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: var(--medium-slate);
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        /* ==================== PROBLEM SECTION ==================== */
+        .problem-section {
+            background: var(--dark-navy);
+            color: var(--pure-white);
+        }
+
+        .problem-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
+        }
+
+        .problem-section .section-tag {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary-purple);
+        }
+
+        .problem-section .section-title {
+            color: var(--pure-white);
+        }
+
+        .problem-section .section-subtitle {
+            color: var(--gray-blue);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .problem-card {
+            background: var(--dark-slate);
+            padding: 48px 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-warm);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .problem-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .problem-icon {
+            font-size: 3.5rem;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .problem-card h3 {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+            color: var(--pure-white);
+            font-weight: 800;
+        }
+
+        .problem-card p {
+            color: var(--gray-blue);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* ==================== SOLUTION SECTION ==================== */
+        .solution-section {
+            background: linear-gradient(180deg, var(--light-bg) 0%, var(--pure-white) 100%);
+        }
+
+        .comparison-wrapper {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 48px;
+            align-items: start;
+            margin-top: 80px;
+        }
+
+        .comparison-box {
+            background: var(--pure-white);
+            padding: 48px 40px;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            position: relative;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .comparison-box.before {
+            border-color: rgba(236, 72, 153, 0.2);
+        }
+
+        .comparison-box.before:hover {
+            border-color: var(--accent-pink);
+            box-shadow: 0 20px 50px rgba(236, 72, 153, 0.15);
+        }
+
+        .comparison-box.after {
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .comparison-box.after:hover {
+            border-color: var(--primary-emerald);
+            box-shadow: 0 20px 50px rgba(16, 185, 129, 0.15);
+        }
+
+        .comparison-box h3 {
+            font-size: 1.75rem;
+            margin-bottom: 32px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            padding: 18px 0;
+            border-bottom: 1px solid var(--soft-gray);
+            color: var(--medium-slate);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .vs-badge {
+            width: 120px;
+            height: 120px;
+            background: var(--gradient-primary);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--pure-white);
+            align-self: center;
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+            transform: rotate(5deg);
+        }
+
+        /* ==================== ROLE SECTION ==================== */
+        .role-section {
+            background: var(--pure-white);
+        }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .role-card {
+            background: linear-gradient(135deg, var(--light-bg) 0%, var(--pure-white) 100%);
+            padding: 40px 36px;
+            border-radius: 24px;
+            border: 2px solid var(--soft-gray);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-primary);
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+        }
+
+        .role-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .role-card:nth-child(2)::before {
+            background: var(--gradient-success);
+        }
+
+        .role-card:nth-child(3)::before {
+            background: var(--gradient-warm);
+        }
+
+        .role-card:nth-child(4)::before {
+            background: var(--gradient-cool);
+        }
+
+        .role-card:nth-child(5)::before {
+            background: var(--gradient-primary);
+        }
+
+        .role-card:nth-child(6)::before {
+            background: var(--gradient-success);
+        }
+
+        .role-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-purple);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .role-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            font-weight: 800;
+        }
+
+        .role-card p {
+            color: var(--medium-slate);
+            line-height: 1.8;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* ==================== PROCESS SECTION ==================== */
+        .process-section {
+            background: linear-gradient(180deg, var(--light-bg) 0%, var(--pure-white) 100%);
+            position: relative;
+        }
+
+        .process-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+        }
+
+        .process-flow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-top: 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .process-item {
+            background: var(--pure-white);
+            padding: 40px 32px;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border: 2px solid var(--soft-gray);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .process-item::after {
+            content: '→';
+            position: absolute;
+            right: -32px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .process-item:last-child::after {
+            display: none;
+        }
+
+        .process-item:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary-purple);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+        }
+
+        .process-num {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: var(--pure-white);
+            margin-bottom: 24px;
+        }
+
+        .process-item:nth-child(2) .process-num {
+            background: var(--gradient-success);
+        }
+
+        .process-item:nth-child(3) .process-num {
+            background: var(--gradient-warm);
+        }
+
+        .process-item:nth-child(4) .process-num {
+            background: var(--gradient-cool);
+        }
+
+        .process-heading {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .process-desc {
+            color: var(--medium-slate);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* ==================== MATH SECTION ==================== */
+        .math-section {
+            background: var(--dark-navy);
+            color: var(--pure-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .math-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        }
+
+        .math-section .section-tag {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary-purple);
+        }
+
+        .math-section .section-title {
+            color: var(--pure-white);
+        }
+
+        .math-wrapper {
+            background: var(--dark-slate);
+            padding: 60px 50px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 1;
+        }
+
+        .math-heading {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 800;
+        }
+
+        .math-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .metric-card {
+            background: var(--dark-navy);
+            padding: 36px 32px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-purple);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .metric-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gray-blue);
+            margin-bottom: 16px;
+            font-weight: 800;
+        }
+
+        .metric-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-card:nth-child(2) .metric-number {
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-card:nth-child(3) .metric-number {
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-highlight {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+            padding: 60px 48px;
+            border-radius: 24px;
+            text-align: center;
+            margin: 60px 0;
+            border: 2px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .result-tag {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--gray-blue);
+            margin-bottom: 24px;
+            font-weight: 800;
+        }
+
+        .result-total {
+            font-size: clamp(4rem, 8vw, 7rem);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 16px;
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-info {
+            font-size: 1.2rem;
+            color: var(--gray-blue);
+        }
+
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .split-item {
+            background: var(--dark-navy);
+            padding: 48px 40px;
+            border-radius: 24px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .split-item:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-emerald);
+            box-shadow: 0 20px 50px rgba(16, 185, 129, 0.3);
+        }
+
+        .split-percent {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 20px;
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .split-amount {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .split-label {
+            font-size: 1.1rem;
+            color: var(--gray-blue);
+            font-weight: 600;
+        }
+
+        .projection-panel {
+            margin-top: 60px;
+            padding: 48px 40px;
+            background: var(--dark-navy);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .projection-heading {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            font-weight: 800;
+        }
+
+        .projection-content {
+            font-size: 1.15rem;
+            line-height: 2.2;
+            color: var(--gray-blue);
+            font-weight: 500;
+        }
+
+        .projection-content strong {
+            color: var(--pure-white);
+            font-weight: 800;
+        }
+
+        /* ==================== BENEFITS SECTION ==================== */
+        .benefits-section {
+            background: linear-gradient(180deg, var(--pure-white) 0%, var(--light-bg) 100%);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .benefit-item {
+            background: var(--pure-white);
+            padding: 48px 40px;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border: 2px solid var(--soft-gray);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .benefit-item:nth-child(2)::after {
+            background: var(--gradient-success);
+        }
+
+        .benefit-item:nth-child(3)::after {
+            background: var(--gradient-warm);
+        }
+
+        .benefit-item:nth-child(4)::after {
+            background: var(--gradient-cool);
+        }
+
+        .benefit-item:nth-child(5)::after {
+            background: var(--gradient-primary);
+        }
+
+        .benefit-item:nth-child(6)::after {
+            background: var(--gradient-success);
+        }
+
+        .benefit-item:hover::after {
+            transform: scaleX(1);
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary-purple);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .benefit-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .benefit-heading {
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            font-weight: 800;
+        }
+
+        .benefit-text {
+            color: var(--medium-slate);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        /* ==================== FRAMEWORKS SECTION ==================== */
+        .frameworks-section {
+            background: var(--light-bg);
+        }
+
+        .frameworks-display {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 80px;
+        }
+
+        .framework-card {
+            background: var(--pure-white);
+            padding: 56px 48px;
+            border-radius: 32px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border: 2px solid var(--soft-gray);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .framework-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-primary);
+        }
+
+        .framework-card:nth-child(2)::before {
+            background: var(--gradient-success);
+        }
+
+        .framework-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-purple);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .framework-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--pure-white);
+            margin-bottom: 32px;
+        }
+
+        .framework-card:nth-child(2) .framework-badge {
+            background: var(--gradient-success);
+        }
+
+        .framework-name {
+            font-size: 2.25rem;
+            margin-bottom: 12px;
+            font-weight: 900;
+        }
+
+        .framework-ref {
+            font-size: 1rem;
+            color: var(--light-slate);
+            margin-bottom: 32px;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .framework-items {
+            list-style: none;
+        }
+
+        .framework-items li {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--soft-gray);
+            color: var(--medium-slate);
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .framework-items li:last-child {
+            border-bottom: none;
+        }
+
+        .framework-items li::before {
+            content: '✓';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            color: var(--primary-purple);
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .frameworks-note {
+            margin-top: 80px;
+            padding: 56px 48px;
+            background: var(--pure-white);
+            border-radius: 32px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border: 2px solid var(--primary-purple);
+        }
+
+        .frameworks-note p {
+            font-size: 1.35rem;
+            line-height: 1.9;
+            color: var(--medium-slate);
+            font-weight: 500;
+        }
+
+        .frameworks-note strong {
+            color: var(--primary-purple);
+            font-weight: 800;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: var(--dark-navy);
+            color: var(--pure-white);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
+        }
+
+        .footer-brand {
+            font-size: 2.25rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-title {
+            font-size: 1.4rem;
+            color: var(--primary-purple);
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .footer-desc {
+            color: var(--gray-blue);
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto 48px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .footer-copy {
+            color: var(--light-slate);
+            font-size: 0.9rem;
+            padding-top: 48px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 32px;
+            }
+
+            .role-grid,
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-flow {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-item::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 80px 0;
+            }
+
+            .hero {
+                padding: 80px 0 60px;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-wrapper {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .vs-badge {
+                margin: 0 auto;
+            }
+
+            .role-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .math-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .split-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .frameworks-display {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .hero h1 {
+                font-size: 2.75rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">Propuesta Estratégica</div>
+                <h1>Tu Nuevo Socio Invisible</h1>
+                <p class="hero-subtitle">
+                    Yo construyo el negocio digital detrás de tu marca. Tú te llevas el crédito (y el 70% de los ingresos).
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat-box">
+                        <div class="stat-number">70%</div>
+                        <div class="stat-label">Para Ti</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">0€</div>
+                        <div class="stat-label">Inversión Inicial</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">30</div>
+                        <div class="stat-label">Días al Lanzamiento</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PROBLEM SECTION ==================== -->
+    <section class="problem-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">EL PROBLEMA</div>
+                <h2 class="section-title">Tienes Audiencia,<br>Pero No Sistema de Monetización</h2>
+                <p class="section-subtitle">
+                    Creadores con miles de seguidores, pero sin un producto digital escalable que convierta esa atención en ingresos reales.
+                </p>
+            </div>
+
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <span class="problem-icon">😰</span>
+                    <h3>Sin Producto Digital</h3>
+                    <p>Tu audiencia te pide más, pero no tienes nada que venderles más allá de contenido gratuito.</p>
+                </div>
+
+                <div class="problem-card">
+                    <span class="problem-icon">🤯</span>
+                    <h3>Abrumado por la Complejidad</h3>
+                    <p>Funnel, email marketing, páginas de ventas, upsells... Sabes que necesitas esto, pero no sabes por dónde empezar.</p>
+                </div>
+
+                <div class="problem-card">
+                    <span class="problem-icon">⏰</span>
+                    <h3>Falta de Tiempo</h3>
+                    <p>Ya estás full creando contenido. No tienes 6 meses para aprender a construir un sistema de ventas.</p>
+                </div>
+
+                <div class="problem-card">
+                    <span class="problem-icon">💸</span>
+                    <h3>Sin Capital para Contratar</h3>
+                    <p>Una agencia de marketing cobra $5k-$15k/mes. Un desarrollador + diseñador + copywriter = $10k+ upfront.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SOLUTION SECTION ==================== -->
+    <section class="solution-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">LA SOLUCIÓN</div>
+                <h2 class="section-title">Antes vs Después</h2>
+            </div>
+
+            <div class="comparison-wrapper">
+                <div class="comparison-box before">
+                    <h3>❌ ANTES</h3>
+                    <ul class="comparison-list">
+                        <li>Miles de seguidores, pero sin forma clara de monetizar</li>
+                        <li>Ingresos inconsistentes (sponsorships ocasionales)</li>
+                        <li>Dependes de algoritmos y marcas externas</li>
+                        <li>No tienes "backend" (producto para vender)</li>
+                        <li>Tu audiencia te pide más, pero no tienes qué ofrecer</li>
+                    </ul>
+                </div>
+
+                <div class="vs-badge">VS</div>
+
+                <div class="comparison-box after">
+                    <h3>✅ DESPUÉS</h3>
+                    <ul class="comparison-list">
+                        <li>Infoproducto profesional valorado en 97-297€</li>
+                        <li>Funnel automatizado de ventas 24/7</li>
+                        <li>Ingresos recurrentes predecibles</li>
+                        <li>Control total de tu monetización</li>
+                        <li>Tu audiencia FELIZ pagando por valor real</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ROLE SECTION ==================== -->
+    <section class="role-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">MI ROL</div>
+                <h2 class="section-title">Qué Hago Yo<br>(El Operador Invisible)</h2>
+                <p class="section-subtitle">
+                    Construyo todo el sistema de monetización mientras tú sigues haciendo lo que mejor sabes: crear contenido.
+                </p>
+            </div>
+
+            <div class="role-grid">
+                <div class="role-card">
+                    <h3>📋 Estrategia de Producto</h3>
+                    <p>Analizo tu audiencia y defino QUÉ infoproducto crear (curso, membresía, workshop). Validación antes de construir.</p>
+                </div>
+
+                <div class="role-card">
+                    <h3>🎬 Producción de Contenido</h3>
+                    <p>Creo el guión completo del producto. Tú solo grabas siguiendo el script que te doy. IA + mi expertise = contenido de élite.</p>
+                </div>
+
+                <div class="role-card">
+                    <h3>🛠️ Construcción Técnica</h3>
+                    <p>Landing pages, checkout, área de miembros, emails automatizados. Todo funcional y profesional.</p>
+                </div>
+
+                <div class="role-card">
+                    <h3>✍️ Copywriting Persuasivo</h3>
+                    <p>Escribo todo el copy de ventas. Emails, páginas, anuncios. Frameworks comprobados que convierten.</p>
+                </div>
+
+                <div class="role-card">
+                    <h3>📊 Funnel de Ventas</h3>
+                    <p>Embudo completo: Lead Magnet → Tripwire → Oferta Core → Upsells. Sistema que maximiza revenue por cliente.</p>
+                </div>
+
+                <div class="role-card">
+                    <h3>🚀 Lanzamiento & Optimización</h3>
+                    <p>Ejecuto la estrategia de lanzamiento. Post-launch: A/B testing, optimización de métricas, escalamiento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PROCESS SECTION ==================== -->
+    <section class="process-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">EL PROCESO</div>
+                <h2 class="section-title">De Cero a Primer Lanzamiento<br>en 30 Días</h2>
+            </div>
+
+            <div class="process-flow">
+                <div class="process-item">
+                    <div class="process-num">01</div>
+                    <h3 class="process-heading">Auditoría & Estrategia</h3>
+                    <p class="process-desc">Analizamos tu audiencia, competencia y posicionamiento. Definimos el producto perfecto para tu nicho.</p>
+                </div>
+
+                <div class="process-item">
+                    <div class="process-num">02</div>
+                    <h3 class="process-heading">Creación de Contenido</h3>
+                    <p class="process-desc">Te entrego el guión completo. Tú grabas (o escribes) el contenido. IA pulida + revisión humana.</p>
+                </div>
+
+                <div class="process-item">
+                    <div class="process-num">03</div>
+                    <h3 class="process-heading">Construcción del Sistema</h3>
+                    <p class="process-desc">Mientras tú creas contenido, yo construyo: páginas, emails, checkout, área de miembros, todo el backend.</p>
+                </div>
+
+                <div class="process-item">
+                    <div class="process-num">04</div>
+                    <h3 class="process-heading">Lanzamiento & Optimización</h3>
+                    <p class="process-desc">Ejecutamos el lanzamiento con estrategia comprobada. Post-launch: A/B testing, optimización de métricas, escalamiento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MATH SECTION ==================== -->
+    <section class="math-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">LAS MATEMÁTICAS</div>
+                <h2 class="section-title">Números Reales,<br>No Promesas Vacías</h2>
+            </div>
+
+            <div class="math-wrapper">
+                <h3 class="math-heading">Ejemplo: Creador con 35k Seguidores</h3>
+
+                <div class="math-metrics">
+                    <div class="metric-card">
+                        <div class="metric-tag">Audiencia</div>
+                        <div class="metric-number">35,000</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-tag">Conversión</div>
+                        <div class="metric-number">0.5%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-tag">Precio</div>
+                        <div class="metric-number">97€</div>
+                    </div>
+                </div>
+
+                <div class="result-highlight">
+                    <div class="result-tag">Resultado por Lanzamiento</div>
+                    <div class="result-total">16,975€</div>
+                    <div class="result-info">(175 ventas × 97€)</div>
+                </div>
+
+                <div class="split-grid">
+                    <div class="split-item">
+                        <div class="split-percent">70%</div>
+                        <div class="split-amount">11,882€</div>
+                        <div class="split-label">Para TI (Creador)</div>
+                    </div>
+                    <div class="split-item">
+                        <div class="split-percent">30%</div>
+                        <div class="split-amount">5,092€</div>
+                        <div class="split-label">Para MÍ (Operador)</div>
+                    </div>
+                </div>
+
+                <div class="projection-panel">
+                    <div class="projection-heading">📊 PROYECCIÓN</div>
+                    <div class="projection-content">
+                        <strong>1 lanzamiento/mes:</strong> ~12,000€/mes para ti<br>
+                        <strong>Ventas evergreen:</strong> Ingresos pasivos adicionales cada mes<br>
+                        <strong>Comisiones de por vida:</strong> Cada venta futura también reparte
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== BENEFITS SECTION ==================== -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">VENTAJAS COMPETITIVAS</div>
+                <h2 class="section-title">Por Qué Este Modelo<br>Simplemente Funciona</h2>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <span class="benefit-emoji">🎯</span>
+                    <h3 class="benefit-heading">Riesgo CERO</h3>
+                    <p class="benefit-text">No pagas nada upfront. Solo gano si TÚ ganas. Incentivos 100% alineados.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <span class="benefit-emoji">⚡</span>
+                    <h3 class="benefit-heading">Acceso a Distribución</h3>
+                    <p class="benefit-text">El problema #1 en negocios es conseguir audiencia. Tú ya la tienes. Yo solo pongo el sistema.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <span class="benefit-emoji">🤖</span>
+                    <h3 class="benefit-heading">IA Hace el Trabajo Pesado</h3>
+                    <p class="benefit-text">Claude + ChatGPT crean contenido, emails, scripts. Tú solo revisas y grabas.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <span class="benefit-emoji">📈</span>
+                    <h3 class="benefit-heading">100% Escalable</h3>
+                    <p class="benefit-text">Producto digital = márgenes del 90%. No hay inventario, ni envíos, ni complicaciones.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <span class="benefit-emoji">🔄</span>
+                    <h3 class="benefit-heading">Ingresos Recurrentes</h3>
+                    <p class="benefit-text">Las ventas evergreen continúan generando ingresos pasivos mes tras mes.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <span class="benefit-emoji">👻</span>
+                    <h3 class="benefit-heading">Yo Soy Invisible</h3>
+                    <p class="benefit-text">Tu audiencia nunca sabrá de mí. El éxito es tuyo. Yo trabajo en las sombras.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FRAMEWORKS SECTION ==================== -->
+    <section class="frameworks-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">FRAMEWORKS COMPROBADOS</div>
+                <h2 class="section-title">No Invento Nada.<br>Uso Lo Que YA Funciona.</h2>
+                <p class="section-subtitle">
+                    Basado en los sistemas de Russell Brunson que han generado +$100M en ventas de infoproductos.
+                </p>
+            </div>
+
+            <div class="frameworks-display">
+                <div class="framework-card">
+                    <div class="framework-badge">01</div>
+                    <h3 class="framework-name">La Estructura</h3>
+                    <p class="framework-ref">Basado en "DotCom Secrets"</p>
+                    <ul class="framework-items">
+                        <li>Value Ladder (Escalera de Valor)</li>
+                        <li>Lead Magnets que convierten</li>
+                        <li>Tripwires de autoliquidación</li>
+                        <li>Ofertas Backend high-ticket</li>
+                        <li>Embudos de continuidad</li>
+                    </ul>
+                </div>
+
+                <div class="framework-card">
+                    <div class="framework-badge">02</div>
+                    <h3 class="framework-name">El Mensaje</h3>
+                    <p class="framework-ref">Basado en "Expert Secrets"</p>
+                    <ul class="framework-items">
+                        <li>Perfect Webinar Framework</li>
+                        <li>Puente de Epifanía</li>
+                        <li>Secuencias "Soap Opera"</li>
+                        <li>Nueva Oportunidad (no mejora)</li>
+                        <li>Stack de valor irresistible</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="frameworks-note">
+                <p>
+                    <strong>Estos no son trucos de marketing random.</strong><br>
+                    Son sistemas científicamente probados que han generado miles de millones en ventas de infoproductos a nivel global.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-brand">Alan Zaid Ramírez Molina</div>
+            <div class="footer-title">Shadow Operator</div>
+            <p class="footer-desc">
+                Tu socio invisible para monetización de audiencias.<br>
+                Construyo el negocio. Tú te llevas el crédito.
+            </p>
+            <div class="footer-copy">© 2026 Shadow Operator Systems</div>
+        </div>
+    </footer>
+
+</body>
+</html>
